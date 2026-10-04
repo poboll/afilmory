@@ -1,0 +1,33 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # 每周一 11:00 北京时间
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync Upstream
+        run: |
+          git remote add upstream https://github.com/Afilmory/Afilmory.git
+          git fetch upstream main
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git merge upstream/main --no-edit || {
+            echo "::error::上游合并冲突——本地品牌文件（config.json/builder.config.ts/apps/web/index.html）与上游改动重叠，请手动解决"
+            exit 1
+          }
+
+      - name: Push
+        run: git push origin main
