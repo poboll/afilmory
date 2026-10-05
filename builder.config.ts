@@ -12,6 +12,7 @@ export default defineBuilderConfig(() => ({
     branch: 'main',
     path: 'photos',
     useRawUrl: true,
+    customDomain: 'cdn.jsdelivr.net/gh/poboll/gallery-photos@main',
   },
   system: {
     processing: {
