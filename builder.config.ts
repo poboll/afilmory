@@ -16,7 +16,7 @@ export default defineBuilderConfig(() => ({
   },
   system: {
     processing: {
-      defaultConcurrency: 10,
+      defaultConcurrency: 2,
       enableLivePhotoDetection: true,
       digestSuffixLength: 8,
       xmp: {
@@ -34,10 +34,10 @@ export default defineBuilderConfig(() => ({
       },
       performance: {
         worker: {
-          workerCount: os.cpus().length * 2,
-          timeout: 30_000,
-          useClusterMode: true,
-          workerConcurrency: 2,
+          workerCount: 1,
+          timeout: 60_000,
+          useClusterMode: false,
+          workerConcurrency: 1,
         },
       },
     },
