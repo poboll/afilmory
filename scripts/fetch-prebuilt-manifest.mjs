@@ -5,9 +5,12 @@
  * 写入 @afilmory/data/manifest 指向的路径，SSR 构建期打包。
  */
 import { mkdirSync, writeFileSync } from 'node:fs'
-import { dirname } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const OUT = 'packages/data/src/photos-manifest.json'
+// 兼容任意 cwd：Vercel 构建时 Root Directory 是 apps/ssr
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const OUT = resolve(ROOT, 'packages/data/src/photos-manifest.json')
 const SOURCES = [
   'https://cdn.jsdelivr.net/gh/poboll/gallery-photos@main/photos-manifest.json',
   'https://raw.githubusercontent.com/poboll/gallery-photos/main/photos-manifest.json',
