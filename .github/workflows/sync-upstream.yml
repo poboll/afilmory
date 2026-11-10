@@ -48,6 +48,24 @@ jobs:
             exit 1
           }
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install pinned pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build gallery with prebuilt manifest
+        env:
+          GALLERY_REPO: poboll/gallery-photos
+        run: |
+          pnpm -w run build:manifest:fetch
+          pnpm -w run build
+
       - name: Push
         # Validation must finish before a merge can reach the production branch.
         if: ${{ !inputs.validate_only }}
